@@ -33,7 +33,7 @@ public class TaskController {
             value = "getTask"
     )
     public TaskDto getTask(Long taskId) {
-        return new TaskDto(1L, "test title", "test_content");
+        return taskMapper.mapToTaskDto(service.getTaskById(1L));
     }
 
     @RequestMapping(
