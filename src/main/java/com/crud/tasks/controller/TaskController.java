@@ -39,7 +39,8 @@ public class TaskController {
             method = RequestMethod.DELETE,
             value = "deleteTask"
     )
-    public void deleteTask(Long taskId) {
+        public void deleteTask(@RequestParam Long taskId) throws TaskNotFoundException {
+            service.deleteTaskById(taskId).orElseThrow(TaskNotFoundException::new);
 
     }
 
