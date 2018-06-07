@@ -28,8 +28,15 @@ public class EmailScheduler {
         simpleEmailService.send(new Mail(
                 adminConfig.getAdminMail(),
                 SUBJECT,
-                "Currently in database you got: " + size + " tasks",
+                "Currently in database you got: " + size + singularPlural(taskRepository),
                 null
         ));
+    }
+
+    private static String singularPlural(final TaskRepository taskRepository) {
+        if (taskRepository.count() == 1) {
+            return " task";
+        }
+        return " tasks";
     }
 }
