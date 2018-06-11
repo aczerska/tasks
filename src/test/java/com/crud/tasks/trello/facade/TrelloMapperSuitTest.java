@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TrelloFacadeSuitTest {
+public class TrelloMapperSuitTest {
 
     @Autowired
     private TrelloMapper mapper;
