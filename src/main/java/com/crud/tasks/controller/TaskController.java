@@ -15,7 +15,7 @@ import java.util.List;
 public class TaskController {
 
     @Autowired
-    private DbService service;
+    private DbService dbService;
 
     @Autowired
     private TaskMapper taskMapper;
@@ -25,7 +25,7 @@ public class TaskController {
             value = "getTasks"
     )
     public List<TaskDto> getTasks() {
-        return taskMapper.mapToTaskDtoList(service.getAllTasks());
+        return taskMapper.mapToTaskDtoList(dbService.getAllTasks());
     }
 
     @RequestMapping(
@@ -33,7 +33,7 @@ public class TaskController {
             value = "getTask"
     )
     public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
-        return taskMapper.mapToTaskDto(service.getTaskById(taskId).orElseThrow(TaskNotFoundException::new));
+        return taskMapper.mapToTaskDto(dbService.getTaskById(taskId).orElseThrow(TaskNotFoundException::new));
     }
 
     @RequestMapping(
@@ -41,7 +41,7 @@ public class TaskController {
             value = "deleteTask"
     )
         public void deleteTask(@RequestParam Long taskId) throws TaskNotFoundException {
-            service.deleteTaskById(taskId).orElseThrow(TaskNotFoundException::new);
+            dbService.deleteTaskById(taskId).orElseThrow(TaskNotFoundException::new);
 
     }
 
@@ -50,7 +50,7 @@ public class TaskController {
             value = "updateTask"
     )
     public TaskDto updateTask(@RequestBody TaskDto taskDto) {
-        return taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(taskDto)));
+        return taskMapper.mapToTaskDto(dbService.saveTask(taskMapper.mapToTask(taskDto)));
     }
 
     @RequestMapping(
@@ -59,7 +59,7 @@ public class TaskController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public void createTask(@RequestBody TaskDto taskDto) {
-        service.saveTask(taskMapper.mapToTask(taskDto));
+        dbService.saveTask(taskMapper.mapToTask(taskDto));
 
     }
 }
