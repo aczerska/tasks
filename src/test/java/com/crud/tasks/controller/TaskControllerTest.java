@@ -21,6 +21,7 @@ import java.util.List;
 import static java.util.Optional.ofNullable;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -95,12 +96,10 @@ public class TaskControllerTest {
     @Test
     public void shouldUpdateTask() throws Exception {
         //Given
-        Task task = new Task(2L, "task_title", "task_content");
         TaskDto taskDto = new TaskDto(2L, "task_title", "task_content");
-
-        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
-        when(dbService.saveTask(task)).thenReturn(task);
-        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+        when(taskMapper.mapToTask(taskDto)).thenReturn(new Task());
+        when(dbService.saveTask(any())).thenReturn(new Task());
+        when(taskMapper.mapToTaskDto(any())).thenReturn(taskDto);
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
