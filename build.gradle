@@ -47,7 +47,7 @@ dependencies {
 
 	compile('org.springframework.boot:spring-boot-starter-mail')
 
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.13.RELEASE'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
