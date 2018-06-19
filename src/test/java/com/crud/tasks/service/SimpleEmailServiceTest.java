@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +22,9 @@ public class SimpleEmailServiceTest {
     @Mock
     private JavaMailSender javaMailSender;
 
+    @Mock
+    private EmailType emailType;
+
     @Test
     public void shouldSendEmail() {
         //Given
@@ -35,7 +37,7 @@ public class SimpleEmailServiceTest {
         mailMessage.setCc(mail.getToCC());
 
         //When
-        simpleEmailService.send(mail);
+        simpleEmailService.send(mail,emailType);
 
         //Then
         verify(javaMailSender, times(1)).send(any(SimpleMailMessage.class));

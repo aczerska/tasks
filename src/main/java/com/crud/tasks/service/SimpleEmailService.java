@@ -24,11 +24,15 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(final Mail mail) {
+    public void send(final Mail mail, EmailType emailType) {
         LOGGER.info("Starting email preparation...");
         try {
-            javaMailSender.send(createMimeMessage(mail));
-            LOGGER.info("Email has been sent");
+            javaMailSender.send(createMimeMessage(mail,emailType));
+            if (emailType == EmailType.TRELLO_CARD) {
+                LOGGER.info("Email for newly created Trello card has been sent");
+            } else if (emailType == EmailType.SCHEDULED) {
+                LOGGER.info("Scheduled email with current tasks quantity has been sent");
+            }
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
@@ -43,12 +47,17 @@ public class SimpleEmailService {
         return mailMessage;
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail, EmailType emailType) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()),true);
+            if (emailType == EmailType.TRELLO_CARD) {
+                messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()),true);
+            } else if (emailType == EmailType.SCHEDULED) {
+                messageHelper.setText(mailCreatorService.buildTasksQuantiyEmail(mail.getMessage()),true);
+            }
+
         };
     }
 }
